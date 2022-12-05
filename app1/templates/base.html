@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mistri Lagbe</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+
+   <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/> 
+
+   <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+
+  </head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'home' % }">Mistri Lagbe?</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="">Mistri</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="">Tutor</a>
+              </li>
+              </ul>
+    
+            <form class="d-flex">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-warning" type="submit">Search</button>
+            </form>
+    
+    
+            <div>
+             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              
+               {% if request.user.is_authenticated %}
+               
+
+                 {% if request.user.is_authenticated and request.user.is_customer  %}
+                      <li class="nav-item mx-2">
+                        <li class="nav-item mx-2">
+                        <a href="" class="nav-link text-white">{{user.username}}</a>
+                          </li>
+                        <a href="{% url 'logout' %}" class="nav-link text-white">Logut</a>
+                      </li>
+                  {% elif request.user.is_authenticated and request.user.is_mistri %}
+                      <li class="nav-item mx-2">
+                        <li class="nav-item mx-2">
+                        <a href="{% url 'mistriprofile' %}" class="nav-link text-white">{{user.username}}</a>
+                          </li>
+                        <a href="{% url 'logout' %}" class="nav-link text-white">Logut</a>
+                      </li>
+
+                   {% endif %}
+             {% else %}
+                
+    
+               <li class="nav-item mx-2">
+                <a href="{% url 'login' %}" class="nav-link text-white">Login</a>
+               </li>
+               <li class="nav-item mx-2">
+                <a href="{% url 'signup' %}" class="nav-link text-white">Registration</a>
+               </li>
+               {% endif %}
+    
+             </ul>
+            </div>
+          </div>
+        </div>
+       </nav>
+    
+      
+    {% block main_contain %}
+      
+    {% endblock main_contain %}
+
+     <!-- Start Footer -->
+     <!-- <footer class="container-fluid bg-dark text-center p-2 mt-5">
+        <small class="text-white">Copyright &copy; 2022 || Atiar rahaman || </small>
+        <img src="" alt="" srcset="" class="img-fluid" height="2px">
+    </footer> End Footer -->
+
+    <script src="{% static 'js/bootstrap.min.js' %}" ></script>
+</body>
+</html>
