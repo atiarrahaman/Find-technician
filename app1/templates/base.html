@@ -8,10 +8,11 @@
     <title>Mistri Lagbe</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
 
 
 
-   <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/> 
+   <!--  -->
 
    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
@@ -21,62 +22,69 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-          <a class="navbar-brand" href="{% url 'home' % }">Mistri Lagbe?</a>
+          <a class="navbar-brand" href="{% url 'home' %}">Mistri Lagbe?</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="">Mistri</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="">Tutor</a>
-              </li>
+
+       
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="">Tutor</a>
+            </li>
+            
+              
               </ul>
+
+
+             
     
-            <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+           
+            <form method="post" action="search" class="d-flex" role="search">
+              {% csrf_token %}
+              <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-warning" type="submit">Search</button>
             </form>
-    
     
             <div>
              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               
-               {% if request.user.is_authenticated %}
                
+              {% if request.user.is_authenticated and request.user.is_mistri %}
+                  
+                <li class="nav-item mx-2">
+                  <a href="{% url 'mistriprofile' %}" class="nav-link text-white">{{user.username}}</a>
+                </li>
+                <li class="nav-item mx-2">
+                  <a href="{% url 'logout' %}" class="nav-link text-white">Logout</a>
+                </li>
 
-                 {% if request.user.is_authenticated and request.user.is_customer  %}
-                      <li class="nav-item mx-2">
-                        <li class="nav-item mx-2">
-                        <a href="" class="nav-link text-white">{{user.username}}</a>
-                          </li>
-                        <a href="{% url 'logout' %}" class="nav-link text-white">Logut</a>
-                      </li>
-                  {% elif request.user.is_authenticated and request.user.is_mistri %}
-                      <li class="nav-item mx-2">
-                        <li class="nav-item mx-2">
-                        <a href="{% url 'mistriprofile' %}" class="nav-link text-white">{{user.username}}</a>
-                          </li>
-                        <a href="{% url 'logout' %}" class="nav-link text-white">Logut</a>
-                      </li>
-
-                   {% endif %}
-             {% else %}
+              {% elif request.user.is_authenticated and request.user.is_customer %}
+                <li class="nav-item mx-2">
+                  <a href="" class="nav-link text-white">{{user.username}}</a>
+                </li>
                 
-    
-               <li class="nav-item mx-2">
-                <a href="{% url 'login' %}" class="nav-link text-white">Login</a>
-               </li>
-               <li class="nav-item mx-2">
-                <a href="{% url 'signup' %}" class="nav-link text-white">Registration</a>
-               </li>
-               {% endif %}
-    
+                <li class="nav-item mx-2">
+                    <a href="{% url 'logout' %}" class="nav-link text-white">Logout</a>
+                  </li>
+
+              {% else %}
+                <li class="nav-item mx-2">
+                  <a href="{% url 'login' %}" class="nav-link text-white">Login</a>
+                </li>
+                <li class="nav-item mx-2">
+                  <a href="{% url 'signup' %}" class="nav-link text-white">Registration</a>
+                </li>
+               {% endif %} 
              </ul>
             </div>
           </div>

@@ -43,14 +43,17 @@ class Profile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
     name=models.CharField( max_length=50)
     bio= models.CharField( max_length=150,)
-    profession=MultiSelectField(choices=mistri_catagory, max_length=120,)
+    skill= models.CharField(choices=mistri_catagory, max_length=50)
+    add_more_skill=MultiSelectField(choices=mistri_catagory, max_length=120,blank=True,null=True)
     phone=models.CharField(max_length=15,)
     email=models.EmailField()
     address=models.CharField(choices=address, max_length=120,)
     description=models.CharField( max_length=550,)
+    profile_pic=models.ImageField(upload_to='media/mistriprofilepic',default='default.jpg')
+    aggre=models.BooleanField(default=False)
 
-    def __str__(self):
-         return self.name
+    # def __str__(self):
+    #      return self.name
     
 
 @receiver(post_save,sender=User)

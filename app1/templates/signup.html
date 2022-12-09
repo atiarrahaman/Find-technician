@@ -1,6 +1,6 @@
 
 {% extends "base.html" %}
-
+{% load crispy_forms_tags %}
 
 {% block main_contain %}
 
@@ -15,15 +15,15 @@
     <hr>
     <form action="" method="post" novalidate  class="shadow p-5">
       {% csrf_token %}
-      {% for fm in form  %}
-        {{fm.label_tag}} {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small> <br>
-      {% endfor %}
 
-      {% if form.non_field_errors %}
+        {{form|crispy}}
+        
+
+      <!-- {% if form.non_field_errors %}
             {% for error in form.non_field_errors %}
                <p class="text-danger">{{error}}</p>
             {% endfor %}
-            {% endif %}
+            {% endif %} -->
 
     
 
@@ -38,4 +38,6 @@
    </div>
   </div>
  </div>
+
+ 
 {% endblock main_contain %}

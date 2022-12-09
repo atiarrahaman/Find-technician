@@ -20,6 +20,7 @@ p {
 }
 
 .card-container {
+	margin-top: 120px;
 	background-color: #109141;
 	border-radius: 5px;
 	box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.75);
@@ -34,7 +35,8 @@ p {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	margin-top: 20px;
+
+	
 }
 
 .card-container .pro {
@@ -115,4 +117,12 @@ footer i {
 footer a {
     color: #3c97bf;
     text-decoration: none;
+}
+
+
+/* profile img css */
+
+.p_img{
+	width: 120px;
+	height: 120px;
 }

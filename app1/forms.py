@@ -11,29 +11,34 @@ class LoginForm(AuthenticationForm):
 
 
 class SignupForm(UserCreationForm):
-    password1=forms.CharField(label='password',widget=forms.PasswordInput(attrs={'class':'form-control'}))
-    password2=forms.CharField(label='Confirm Password',widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    # password1=forms.CharField(label='password',widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    # password2=forms.CharField(label='Confirm Password',widget=forms.PasswordInput(attrs={'class':'form-control'}))
     
     
     
     class Meta:
         model=User
-        fields=['is_customer','is_mistri','username']
-        widgets={
-            'username':forms.TextInput(attrs={'class':'form-control'}),
+        fields=['username','password1','password2','is_mistri','is_customer']
+        # widgets={
+        #     'username':forms.TextInput(attrs={'class':'form-control'}),
             
             
-        }
+        # }
 
 class ProfileForm(forms.ModelForm):
+    aggre=forms.BooleanField(required=True)
+   
+
     class Meta:
         model=Profile
-        fields=['name','bio','phone','email','description','profession','address']
-        widgets={
-            'name':forms.TextInput(attrs={'class':'form-control'}),
-            'bio':forms.TextInput(attrs={'class':'form-control'}),
-            'phone':forms.TextInput(attrs={'class':'form-control'}),
-            'email':forms.TextInput(attrs={'class':'form-control'}),
-            'description':forms.Textarea(attrs={'class':'form-control'}),
+        
+        fields=['name','bio','phone','email','description','skill','add_more_skill','address','profile_pic','aggre']
+        # widgets={
+        #     'name':forms.TextInput(attrs={'class':'form-control'}),
+        #     'bio':forms.TextInput(attrs={'class':'form-control'}),
+        #     'phone':forms.TextInput(attrs={'class':'form-control'}),
+        #     'email':forms.TextInput(attrs={'class':'form-control'}),
+        #     'description':forms.Textarea(attrs={'class':'form-control'}),
             
-        }
+            
+        # }

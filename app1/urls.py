@@ -10,4 +10,5 @@ urlpatterns = [
     path('mistriprofile',views.MistriProfile , name='mistriprofile'),
     path('editprofile',views.EditProfile , name='editprofile'),
     path('detailprofile/<int:id>',views.DetailsProfile , name='detailprofile'),
+    path('search',views.Search , name='search'),
 ]

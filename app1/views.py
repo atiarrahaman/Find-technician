@@ -3,15 +3,46 @@ from  django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate,login,logout
 from .forms import SignupForm ,ProfileForm,LoginForm
 from .models import Profile ,User
+from .filters import MistriFilter
+from django.db.models import Q
 # Create your views here.
 
 
 
+
+
+
+
+
+
+def Search(request):
+    query=request.POST.get('search','')
+    if query:
+        queryset = (Q(name__icontains=query)) | (
+            Q(skill__icontains=query)) | (Q(add_more_skill__icontains=query)) |(Q(address__icontains=query)) | (Q(description__icontains=query)) 
+        results=Profile.objects.filter(queryset).distinct()
+    else:
+        results=[]
+    context={
+        'results':results
+    }
+    return render (request,'search.html',context)
+    
+
+
+
+
 def Home(request):
-    alldata=Profile.objects.all()
-    context={'alldata':alldata}
+    alldata=Profile.objects.filter(aggre=True).order_by('-id')
+    
+    q=MistriFilter(request.GET ,queryset=alldata)
+    alldata=q.qs
+    context={'alldata':alldata ,'q':q }
     return render (request,'home.html',context)
 
+
+
+    
 def Signup(request):
    if request.user.is_authenticated:
      return redirect('home')
@@ -71,7 +102,7 @@ def EditProfile(request):
     if request.user.is_authenticated and request.user.is_mistri:
         if request.method =='POST':
           ed=Profile.objects.get(user=request.user)
-          fm=ProfileForm(request.POST,instance=ed)
+          fm=ProfileForm(request.POST,request.FILES,instance=ed)
           if fm.is_valid():
             fm.save()
             return redirect('mistriprofile')

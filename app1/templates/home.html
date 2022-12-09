@@ -1,13 +1,26 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 
 {% block main_contain %}
   
 <div class="containe">
     <div class="row">
-        <div class="col-md-4">Filter</div>
-        <div class="col-md-4">Type</div>
-        <div class="col-md-4">Address</div>
+       
+          <div class="col-md-3"></div>
+          <div class="col-md-6 mt-4">
+
+            <form action="" method="GET">
+                {{q.form}}
+               <input type="submit" class="btn btn-primary" value="seacrh">
+              
+                
+              </form>
+          </div>
+          <div class="col-md-3"></div>
+        
+        
+        
     </div>
 </div>
 <br> 
@@ -15,38 +28,46 @@
 <br>
 <div class="container">
     <div class="row">
-        {% for i in alldata %}
-        <div class="col-md-4">
-            <div class="card-container">
-                <!-- <span class="pro">PRO</span> -->
-                <img class="round" src="https://randomuser.me/api/portraits/women/79.jpg" alt="user" />
-                <h3>{{i.name}}</h3> 
-                <h6><i class="fa-solid fa-location-dot h-4 fill-current text-info pr-2"></i>{{i.address}}</h6>
-                <p>{{i.bio}}</p>
-                <div class="buttons">
-                    <button >
-                     <a href="{% url 'detailprofile' i.id %}" class="btn btn-outline-primary text-white">Details</a>   
-                    </button>
-                    <button >
-                      <a href="" class="btn btn-outline-primary text-white">Chat</a>  
-                    </button>
-                </div>
-                <div class="skills">
-                    <h6>Skills</h6>
-                    <ul>
-                        <li>{{i.profession.3}}</li>
-                        <li>{{i.profession.2}}</li>
-                        <li>{{i.profession.1}}</li>
-                        <li>{{i.profession.4}}</li>
-                        <li>{{i.profession.5}}</li>
-                        <li>{{i.profession.6}}</li>
+    
+           {% for i in alldata %}
+                <div class="col-md-4">
+                <div class="card-container ">
+                    <!-- <span class="pro">PRO</span> -->
+                    <img class="round p_img" src="{{i.profile_pic.url}}" alt="user" />
+                    <h3>{{i.name}}</h3> 
+                    <h6><i class="fa-solid fa-location-dot h-4 fill-current text-info pr-2"></i>{{i.address}}</h6>
+                    <p>{{i.bio}}</p>
+                    <div class="buttons">
+                        
+                        <a href="{% url 'detailprofile' i.id %}" class="btn btn-outline-primary text-white">Details</a>   
                         
                         
+                        <a href="" class="btn btn-outline-primary text-white">Chat</a>  
                         
-                    </ul>
+                    </div>
+                    <div class="skills">
+                        <h6>Skills</h6>
+                        <ul>
+                            <li>{{i.skill}}</li>
+
+                            <li>{{i.add_more_skill.0}}</li>
+                            <li>{{i.add_more_skill.1}}</li>
+                            <li>{{i.add_more_skill.2}}</li>
+                            <li>{{i.add_more_skill.3}}</li>
+                            <li>{{i.add_more_skill.4}}</li>
+                            <li>{{i.add_more_skill.5}}</li>
+                            <li>{{i.add_more_skill.6}}</li>
+                            <li>{{i.add_more_skill.7}}</li>
+                            <li>{{i.add_more_skill.8}}</li>
+                            <li>{{i.add_more_skill.9}}</li>
+                            
+                            
+                            
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+        
         {% endfor %}
     </div>
 </div>
