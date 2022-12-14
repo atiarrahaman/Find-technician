@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block main_contain %}
+
+
+  <div class="container">
+    <div class="row my-3">
+     <div class="col-sm-6 offset-sm-3">
+      <h3>Update Your Profile</h3>
+      <hr>
+      <form action="" method="post" enctype='multipart/form-data' novalidate class="shadow p-5">
+        {% csrf_token %}
+        {{form|crispy}}
+
+        
+       
+       
+       <input type="submit" class="btn btn-primary mt-4" value="save">
+       <a href="{% url 'mistriprofile' %}" class="btn btn-warning mt-4">back</a>
+       
+      
+      </form>  
+     </div>
+    </div>
+   </div>
+{% endblock main_contain %}

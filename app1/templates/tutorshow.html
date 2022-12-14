@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block main_contain %}
+  
+ <div class="containe">
+    <div class="row">
+       
+          <div class="col-md-2"></div>
+          <div class="col-md-8 mt-4">
+
+            <form action="" method="GET">
+                {{tq.form}}
+               <input type="submit" class="btn btn-primary" value="seacrh">
+              
+                
+              </form>
+          </div>
+          <div class="col-md-2"></div> 
+        
+        
+        
+</div>
+</div>
+<br> 
+<hr>
+<br>
+<div class="container">
+    <div class="row">
+    
+           {% for i in tutorshow %}
+                <div class="col-md-6 ">
+                <div class="card-container  ">
+                    <!-- <span class="pro">PRO</span> -->
+                    <img class="round p_img" src="{{i.profile_pic.url}}" alt="user" />
+                    <h3>{{i.name}}</h3> 
+                    <h6><i class="fa-solid fa-location-dot h-4 fill-current text-info pr-2"></i>  {{i.address}}</h6>
+                    <p>{{i.bio}}</p>
+                    <p> <b>Class: </b> {{i.clases}} , {{iadd_more_clases}}</p>
+                    <p> <b>sujcets:</b>  {{i.subjects}} ,{{i.add_more_subject}}</p>
+
+
+                    <div class="buttons">
+                        
+                        <a href="{% url 'tutordetails' i.id %}" class="btn btn-primary text-white">Details</a>   
+                        
+                        
+                        <a href="" class="btn btn-warning text-white">Chat</a>  
+                        
+                    </div>
+                  
+                </div>
+            </div>
+        
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock main_contain %}
+

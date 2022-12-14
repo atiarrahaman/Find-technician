@@ -8,4 +8,10 @@ class MistriFilter(django_filters.FilterSet):
     class Meta:
         model=Profile
         fields={'address','skill'}
+
+class toutorFilter(django_filters.FilterSet):
+    
+    class Meta:
+        model=Profile
+        fields={'address','clases','subjects'}
  

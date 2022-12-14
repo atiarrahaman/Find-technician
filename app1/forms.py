@@ -18,7 +18,7 @@ class SignupForm(UserCreationForm):
     
     class Meta:
         model=User
-        fields=['username','password1','password2','is_mistri','is_customer']
+        fields=['username','password1','password2','is_mistri','is_tutor','is_customer']
         # widgets={
         #     'username':forms.TextInput(attrs={'class':'form-control'}),
             
@@ -41,4 +41,12 @@ class ProfileForm(forms.ModelForm):
         #     'description':forms.Textarea(attrs={'class':'form-control'}),
             
             
-        # }
+class ProfileFormTutor(forms.ModelForm):
+    tutor=forms.BooleanField(required=True)
+   
+    
+
+    class Meta:
+        model=Profile
+        
+        fields=['name','bio','phone','email','description','clases','add_more_clases','subjects','add_more_subject','address','profile_pic','tutor']       # }

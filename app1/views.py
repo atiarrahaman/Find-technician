@@ -1,10 +1,12 @@
 from django.shortcuts import render,redirect
 from  django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate,login,logout
-from .forms import SignupForm ,ProfileForm,LoginForm
+from .forms import SignupForm ,ProfileForm,LoginForm,ProfileFormTutor
 from .models import Profile ,User
-from .filters import MistriFilter
+from .filters import MistriFilter,toutorFilter
 from django.db.models import Q
+
+from django.core.paginator import Paginator
 # Create your views here.
 
 
@@ -18,8 +20,8 @@ from django.db.models import Q
 def Search(request):
     query=request.POST.get('search','')
     if query:
-        queryset = (Q(name__icontains=query)) | (
-            Q(skill__icontains=query)) | (Q(add_more_skill__icontains=query)) |(Q(address__icontains=query)) | (Q(description__icontains=query)) 
+        queryset = (Q(skill__icontains=query)) | (Q(add_more_skill__icontains=query))
+                       
         results=Profile.objects.filter(queryset).distinct()
     else:
         results=[]
@@ -34,10 +36,14 @@ def Search(request):
 
 def Home(request):
     alldata=Profile.objects.filter(aggre=True).order_by('-id')
-    
     q=MistriFilter(request.GET ,queryset=alldata)
     alldata=q.qs
-    context={'alldata':alldata ,'q':q }
+    paginator = Paginator(alldata, 6) # Show 25 contacts per page.
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)      
+    
+    context={'q':q ,'page_obj':page_obj }
     return render (request,'home.html',context)
 
 
@@ -72,6 +78,9 @@ def Login(request):
             if user is not None and user.is_mistri:
                 login(request,user)
                 return redirect('mistriprofile')
+            elif user is not None and user.is_tutor:
+                login(request,user)
+                return redirect('tutorprofile')
             elif user is not None and user.is_customer:
                 login(request,user)
                 return redirect('home')
@@ -91,7 +100,7 @@ def Logout(request):
     return redirect('login')
 
 def MistriProfile(request):
-    if request.user.is_authenticated and request.user.is_mistri:
+    if request.user.is_authenticated and request.user.is_mistri :
         fm=Profile.objects.filter(user=request.user)
         context={'form':fm}
         return render(request,'mistriprofile.html',context)
@@ -115,7 +124,58 @@ def EditProfile(request):
         return redirect('home')
 
 def DetailsProfile(request,id):
-    details=Profile.objects.get(id=id)
+   if request.user.is_authenticated:
+     details=Profile.objects.get(id=id)
     
-    context={'details':details}
-    return render(request,'detailsprofile.html',context)
+     context={'details':details}
+     return render(request,'detailsprofile.html',context)
+   else:
+    return redirect('login')
+
+
+def TutorProfile(request):
+    if request.user.is_authenticated and request.user.is_tutor :
+        fm=Profile.objects.filter(user=request.user)
+        context={'form':fm}
+        return render(request,'tutorprofile.html',context)
+    else:
+        return redirect('home')
+
+
+def TutorProfileEdit(request):
+    if request.user.is_authenticated and request.user.is_tutor:
+        if request.method =='POST':
+          ed=Profile.objects.get(user=request.user)
+          fm=ProfileFormTutor(request.POST,request.FILES,instance=ed)
+          if fm.is_valid():
+            fm.save()
+            return redirect('tutorprofile')
+        else:
+            ed=Profile.objects.get(user=request.user)
+            fm=ProfileFormTutor(instance=ed)
+        context={'form':fm}
+        return render(request,'tutoreditprofile.html',context)
+    else:
+        return redirect('home')
+
+
+
+def TutorShow(request):
+
+    tutorshow=Profile.objects.filter(tutor=True).order_by('-id')
+    
+    tq=toutorFilter(request.GET ,queryset=tutorshow)
+    tutorshow=tq.qs
+    context={'tutorshow':tutorshow,'tq':tq}
+    return render(request,'tutorshow.html',context)
+
+
+
+def TutorDetials(request,id):
+    if request.user.is_authenticated:
+       tutordetails=Profile.objects.get(id=id)
+       contexts={'td':tutordetails}
+       return render(request,'tutordetails.html',contexts)
+    else:
+        return redirect('login')
+  

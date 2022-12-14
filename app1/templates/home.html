@@ -29,49 +29,91 @@
 <div class="container">
     <div class="row">
     
-           {% for i in alldata %}
-                <div class="col-md-4">
-                <div class="card-container ">
-                    <!-- <span class="pro">PRO</span> -->
-                    <img class="round p_img" src="{{i.profile_pic.url}}" alt="user" />
-                    <h3>{{i.name}}</h3> 
-                    <h6><i class="fa-solid fa-location-dot h-4 fill-current text-info pr-2"></i>{{i.address}}</h6>
-                    <p>{{i.bio}}</p>
-                    <div class="buttons">
-                        
-                        <a href="{% url 'detailprofile' i.id %}" class="btn btn-outline-primary text-white">Details</a>   
-                        
-                        
-                        <a href="" class="btn btn-outline-primary text-white">Chat</a>  
-                        
-                    </div>
-                    <div class="skills">
-                        <h6>Skills</h6>
-                        <ul>
-                            <li>{{i.skill}}</li>
-
-                            <li>{{i.add_more_skill.0}}</li>
-                            <li>{{i.add_more_skill.1}}</li>
-                            <li>{{i.add_more_skill.2}}</li>
-                            <li>{{i.add_more_skill.3}}</li>
-                            <li>{{i.add_more_skill.4}}</li>
-                            <li>{{i.add_more_skill.5}}</li>
-                            <li>{{i.add_more_skill.6}}</li>
-                            <li>{{i.add_more_skill.7}}</li>
-                            <li>{{i.add_more_skill.8}}</li>
-                            <li>{{i.add_more_skill.9}}</li>
-                            
-                            
-                            
-                        </ul>
-                    </div>
+           {% for i in page_obj %}
+           <div class="col-md-6 main ">
+            <div class="card-container  ">
+                <!-- <span class="pro">PRO</span> -->
+                <img class="round p_img" src="{{i.profile_pic.url}}" alt="user" />
+                <h3>{{i.name}}</h3> 
+                <h6><i class="fa-solid fa-location-dot h-4 fill-current text-info pr-2"></i>  {{i.address}}</h6>
+                <p>{{i.bio}}</p>
+                <p> <b>Skill: </b> {{i.skill}}</p>
+                <p>  <b>More skill:</b>{{i.add_more_skill}} </p>
+                <div class="buttons">
+                    
+                    <a href="{% url 'detailprofile' i.id %}" class="btn btn-primary text-white">Details</a>   
+                    
+                    
+                    <a href="" class="btn btn-warning text-white">Chat</a>  
+                    
                 </div>
+              
             </div>
+        </div>
         
         {% endfor %}
+
+
+
+        <nav aria-label="..." > 
+         <ul class="pagination">
+            
+          {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+           {% else %}
+             <a>Previous</a>
+           {% endif %}
+           
+           {% for i in page_obj.paginator.page_range %}
+             {% if page_obj.number == i %}
+               <li class="page-item" ><a class="page-link" href="#">{{ i }} </a></li>
+             {% else %}
+               <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+             {% endif %}
+           {% endfor %}
+           
+           {% if page_obj.has_next %}
+             <li class="page-item" ><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+           {% else %}
+             <a>Next</a>
+           {% endif %}
+
+         </ul>
+        </nav>
+
+
     </div>
 </div>
 
 
 {% endblock main_contain %}
 
+<!-- {% if page_obj.has_previous %}
+  <a href="?page={{ page_obj.previous_page_number }}">« Previous page</a>
+
+  {% if page_obj.number > 3 %}
+    <a href="?page=1">1</a>
+    {% if page_obj.number > 4 %}
+      <span>...</span>
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+{% for num in page_obj.paginator.page_range %}
+  {% if page_obj.number == num %}
+    <a href="?page={{ num }}">{{ num }}</a>
+  {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+    <a href="?page={{ num }}">{{ num }}</a>
+  {% endif %}
+{% endfor %}
+
+{% if page_obj.has_next %}
+  {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+    <span>...</span>
+    <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+  {% elif page_obj.number < page_obj.paginator.num_pages|add:'-2' %}
+    <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+  {% endif %}
+
+  <a href="?page={{ page_obj.next_page_number }}">Next Page »</a>
+{% endif %} -->
