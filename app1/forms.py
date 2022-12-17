@@ -1,6 +1,6 @@
 from django import forms 
 
-from .models import User ,Profile
+from .models import User ,Profile ,CustomerRating
 from django.contrib.auth.forms import UserCreationForm ,AuthenticationForm,UsernameField
 
 
@@ -11,42 +11,28 @@ class LoginForm(AuthenticationForm):
 
 
 class SignupForm(UserCreationForm):
-    # password1=forms.CharField(label='password',widget=forms.PasswordInput(attrs={'class':'form-control'}))
-    # password2=forms.CharField(label='Confirm Password',widget=forms.PasswordInput(attrs={'class':'form-control'}))
-    
-    
-    
     class Meta:
         model=User
         fields=['username','password1','password2','is_mistri','is_tutor','is_customer']
-        # widgets={
-        #     'username':forms.TextInput(attrs={'class':'form-control'}),
-            
-            
-        # }
+       
+
+
 
 class ProfileForm(forms.ModelForm):
     aggre=forms.BooleanField(required=True)
-   
-
     class Meta:
         model=Profile
-        
         fields=['name','bio','phone','email','description','skill','add_more_skill','address','profile_pic','aggre']
-        # widgets={
-        #     'name':forms.TextInput(attrs={'class':'form-control'}),
-        #     'bio':forms.TextInput(attrs={'class':'form-control'}),
-        #     'phone':forms.TextInput(attrs={'class':'form-control'}),
-        #     'email':forms.TextInput(attrs={'class':'form-control'}),
-        #     'description':forms.Textarea(attrs={'class':'form-control'}),
+       
             
             
 class ProfileFormTutor(forms.ModelForm):
     tutor=forms.BooleanField(required=True)
-   
-    
-
     class Meta:
         model=Profile
-        
-        fields=['name','bio','phone','email','description','clases','add_more_clases','subjects','add_more_subject','address','profile_pic','tutor']       # }
+        fields=['name','bio','phone','email','description','clases','add_more_clases','subjects','add_more_subject','address','profile_pic','tutor']    
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model=CustomerRating
+        fields=['rating','review']

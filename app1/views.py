@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 from  django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate,login,logout
-from .forms import SignupForm ,ProfileForm,LoginForm,ProfileFormTutor
-from .models import Profile ,User
+from .forms import SignupForm ,ProfileForm,LoginForm,ProfileFormTutor ,ReviewForm
+from .models import Profile ,User ,CustomerRating
 from .filters import MistriFilter,toutorFilter
 from django.db.models import Q
 
@@ -126,8 +126,8 @@ def EditProfile(request):
 def DetailsProfile(request,id):
    if request.user.is_authenticated:
      details=Profile.objects.get(id=id)
-    
-     context={'details':details}
+     mistrireview=CustomerRating.objects.filter(profile=details)
+     context={'i':details,'mistrireviews':mistrireview}
      return render(request,'detailsprofile.html',context)
    else:
     return redirect('login')
@@ -166,7 +166,10 @@ def TutorShow(request):
     
     tq=toutorFilter(request.GET ,queryset=tutorshow)
     tutorshow=tq.qs
-    context={'tutorshow':tutorshow,'tq':tq}
+    paginator = Paginator(tutorshow, 6) # Show 25 contacts per page.
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)  
+    context={'tutorshow':tutorshow,'tq':tq ,'page_obj':page_obj}
     return render(request,'tutorshow.html',context)
 
 
@@ -174,8 +177,34 @@ def TutorShow(request):
 def TutorDetials(request,id):
     if request.user.is_authenticated:
        tutordetails=Profile.objects.get(id=id)
-       contexts={'td':tutordetails}
+       reviews=CustomerRating.objects.filter(profile=tutordetails)
+       contexts={'i':tutordetails,'reviews':reviews}
        return render(request,'tutordetails.html',contexts)
     else:
         return redirect('login')
+
+def Review(request):
+    if request.method == 'GET':
+        review=request.GET.get('r')
+        profile=Profile.objects.get(id=review)
+        rating=request.GET.get('rating')
+        texts=request.GET.get('texts')
+        user=request.user
+        CustomerRating(user=user,profile=profile,rating=rating,review=texts).save()
+        return redirect('tutordetails',id=review)
+
+def MistriReview(request):
+    if request.method == 'GET':
+        mistrireviews=request.GET.get('mistrireview')
+        profile=Profile.objects.get(id=mistrireviews)
+        rating=request.GET.get('rating')
+        texts=request.GET.get('texts')
+        user=request.user
+        CustomerRating(user=user,profile=profile,rating=rating,review=texts).save()
+        return redirect('detailprofile',id=mistrireviews)
+
+
+
+
+
   

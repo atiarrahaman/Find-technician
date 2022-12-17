@@ -21,4 +21,9 @@ urlpatterns = [
     path('tutordetails/<int:id>',views.TutorDetials , name='tutordetails'),
      #search
     path('search',views.Search , name='search'),
+    
+    # review
+    path('reviews/',views.Review , name='reviews'),
+    path('mistrireviews/',views.MistriReview , name='mistrireviews')
+  
 ]

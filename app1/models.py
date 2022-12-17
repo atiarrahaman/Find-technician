@@ -10,7 +10,7 @@ class User(AbstractUser):
     is_mistri=models.BooleanField('আমি মিস্ত্রী', default=False)
     is_tutor=models.BooleanField('আমি টিউটর', default=False)
 
-
+ 
 mistri_catagory=(
     ('ইলেক্টিক','ইলেক্টিক'),
     ('টিভি','টিভি'),
@@ -113,3 +113,14 @@ class Profile(models.Model):
 def create_profile(sender,instance ,created,**kwargs):
     if created:
          Profile.objects.create(user=instance)
+
+# For review
+
+class CustomerRating(models.Model):
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    profile=models.ForeignKey(Profile,on_delete=models.CASCADE)
+    rating=models.FloatField()
+    review=models.TextField(max_length=500)
+    date= models.DateTimeField(auto_now=True)
+  
+    
